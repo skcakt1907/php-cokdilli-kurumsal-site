@@ -1,0 +1,40 @@
+# Development
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Database & Config
+inc/config.php
+*/inc/config.php
+
+# Uploads (generated content)
+uploads/*
+*/uploads/*
+!uploads/.htaccess
+!*/uploads/.htaccess
+
+# Database (local)
+*.sql
+kurulum.sql
+*/kurulum.sql
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Admin backups
+*.bak
+
+# Tanitim videolari (git'e girmesin)
+tanitim/
+build/
+
+# Gecici teshis dosyalari — kendi icinde "kontrolden sonra silin" yazar
+/_tani.php
+/_teshis*.php
+
+# Elle alinmis yedek kopyalar — artik git yedek tutuyor, bunlar gereksiz
+*.yedek

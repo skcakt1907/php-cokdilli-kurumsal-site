@@ -1,0 +1,37 @@
+# ===== Security Headers =====
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always unset X-Powered-By
+</IfModule>
+
+# inc/ klasörüne tarayıcıdan doğrudan erişimi engelle
+RewriteEngine On
+RewriteRule ^inc/ - [F,L]
+RewriteRule ^admin/inc/ - [F,L]
+
+# .sql ve config dosyalarına erişimi engelle
+<FilesMatch "\.(sql|env|log|ini)$">
+  Require all denied
+</FilesMatch>
+
+# Eğer site bir alt klasördeyse RewriteBase ayarla (canlıda kök ise / olur)
+RewriteBase /fgg-holding/
+
+# admin/ alt dizini dokunmadan geçsin — admin'de .php URL'leri ham çalışır
+RewriteRule ^admin/ - [L]
+
+# .php uzantılı URL geldi ise uzantısız sürüme yönlendir (SEO için)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/(.+)\.php[\s?] [NC]
+RewriteRule ^ %1 [R=302,L,QSA]
+
+# Uzantısız URL geldi ise gerçek .php dosyasına bağla (kullanıcı görmez)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L]
+
+# index.php trailing slash
+DirectoryIndex index.php index.html
